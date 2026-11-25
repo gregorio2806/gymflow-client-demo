@@ -809,7 +809,7 @@ function renderUsers() {
             state.users.filter((user) => user.role === 'Staff').length,
             'active staff',
         ),
-        kpi('INVITATIONS', state.invitations.length + 1, 'awaiting acceptance'),
+        kpi('INVITATIONS', state.invitations.length, 'awaiting acceptance'),
     ].join('');
     document.getElementById('users-table').innerHTML = state.users
         .map(
@@ -1106,7 +1106,7 @@ function subscriptionModal(existing = null) {
     };
     openModal(
         existing ? 'Edit Gym Access Plan' : 'Add Gym Access Plan',
-        `<form class="modal-form"><label>Name<input name="name" value="${esc(plan.name)}" required /></label><label>Duration in days<input name="duration" type="number" min="1" value="${Number.parseInt(plan.duration, 10) || 30}" required /></label><label>Price (₱)<input name="price" type="number" min="0" step="0.01" value="${plan.price}" required /></label><label>Status<select name="status"><option ${plan.status === 'Active' ? 'selected' : ''}>Active</option><option ${plan.status === 'Inactive' ? 'selected' : ''}>Inactive</option></select></label><p>These prices belong to this gym’s member access catalog.</p><div class="form-actions"><button class="outline-button" data-modal-close type="button">Cancel</button><button class="primary-button" type="submit">${existing ? 'Save changes' : 'Add subscription'}</button></div></form>`,
+        `<form class="modal-form"><label>Name<input name="name" value="${esc(plan.name)}" required /></label><label>Duration in days<input name="duration" type="number" min="1" value="${Number.parseInt(plan.duration, 10) || 30}" required /></label><label>Price (₱)<input name="price" type="number" min="0" step="0.01" value="${plan.price}" required /></label><label>Status<select name="status"><option ${plan.status === 'Active' ? 'selected' : ''}>Active</option><option ${plan.status === 'Inactive' ? 'selected' : ''}>Inactive</option></select></label><p>These prices belong to this gym’s member access catalog.</p><div class="form-actions"><button class="outline-button" data-modal-close type="button">Cancel</button><button class="primary-button" type="submit">${existing ? 'Save changes' : 'Add gym access plan'}</button></div></form>`,
         (data) => {
             const values = {
                 name: data.get('name').trim(),
@@ -1205,17 +1205,21 @@ function userModal(existing = null) {
     const branchOptions = state.branches
         .map(
             (branch) =>
-                `<label class="branch-choice"><input type="checkbox" name="branches" value="${esc(branch.name)}" ${selected.includes(branch.name) ? 'checked' : ''} />${esc(branch.name)}</label>`,
+                `<label class="branch-choice"><input type="${user.role === 'Branch manager' ? 'radio' : 'checkbox'}" name="branches" value="${esc(branch.name)}" ${selected.includes(branch.name) ? 'checked' : ''} />${esc(branch.name)}</label>`,
         )
         .join('');
     openModal(
-        existing ? 'Edit user' : 'Add user and send invitation',
-        `<form class="modal-form"><label>Name<input name="name" value="${esc(user.name)}" required /></label><label>Email<input name="email" type="email" value="${esc(user.email)}" placeholder="person@example.com" required /></label><label>Role<select name="role"><option ${user.role === 'Staff' ? 'selected' : ''}>Staff</option><option ${user.role === 'Coach' ? 'selected' : ''}>Coach</option><option ${user.role === 'Branch manager' ? 'selected' : ''}>Branch manager</option></select></label><fieldset class="branch-picker"><legend>Branch access</legend><label class="branch-choice"><input type="checkbox" name="branches" value="all" ${selected.includes('all') ? 'checked' : ''} />All branches</label>${branchOptions}</fieldset>${existing ? '' : '<p>An invitation will be recorded for this email in the demo. No email is sent from this static site.</p>'}<div class="form-actions"><button class="outline-button" data-modal-close type="button">Cancel</button><button class="primary-button" type="submit">${existing ? 'Save changes' : 'Create user and send invite'}</button></div></form>`,
+        existing ? 'Edit user' : 'Add user',
+        `<form class="modal-form"><label>Name<input name="name" value="${esc(user.name)}" required /></label><label>Email<input name="email" type="email" value="${esc(user.email)}" placeholder="person@example.com" required /></label><label>Role<select name="role" id="user-role"><option ${user.role === 'Staff' ? 'selected' : ''}>Staff</option><option ${user.role === 'Coach' ? 'selected' : ''}>Coach</option><option ${user.role === 'Branch manager' ? 'selected' : ''}>Branch manager</option></select></label><fieldset class="branch-picker"><legend>Branch access</legend><label class="branch-choice" data-all-branches ${user.role === 'Branch manager' ? 'hidden' : ''}><input type="checkbox" name="branches" value="all" ${selected.includes('all') ? 'checked' : ''} />All branches</label>${branchOptions}<p class="branch-error" data-branch-error hidden>Select a branch or choose All branches.</p></fieldset>${existing ? '' : '<p>An invitation will be recorded for this email in the demo. No email is sent from this static site.</p>'}<div class="form-actions"><button class="outline-button" data-modal-close type="button">Cancel</button><button class="primary-button" type="submit">${existing ? 'Save changes' : 'Create user and send invite'}</button></div></form>`,
         (data) => {
             const email = data.get('email').trim().toLowerCase();
             const choices = data.getAll('branches');
+            if (!choices.length) {
+                document.querySelector('#modal [data-branch-error]').hidden = false;
+                return;
+            }
             const branchNames =
-                choices.includes('all') || !choices.length
+                choices.includes('all')
                     ? 'All branches'
                     : choices.join(', ');
             if (existing) {
@@ -1251,7 +1255,24 @@ function userModal(existing = null) {
             );
         },
     );
+    const roleSelect = document.querySelector('#modal #user-role');
+    const allBranchLabel = document.querySelector('#modal [data-all-branches]');
     const allBranches = document.querySelector('#modal input[value="all"]');
+    const branchInputs = [...document.querySelectorAll(
+        '#modal input[name="branches"]:not([value="all"])',
+    )];
+    roleSelect?.addEventListener('change', () => {
+        const manager = roleSelect.value === 'Branch manager';
+        allBranchLabel.hidden = manager;
+        branchInputs.forEach((input) => {
+            input.type = manager ? 'radio' : 'checkbox';
+        });
+        if (manager) {
+            allBranches.checked = false;
+            if (!branchInputs.some((input) => input.checked) && branchInputs[0])
+                branchInputs[0].checked = true;
+        }
+    });
     allBranches?.addEventListener('change', () => {
         if (allBranches.checked)
             document
@@ -1262,13 +1283,15 @@ function userModal(existing = null) {
                     input.checked = false;
                 });
     });
-    document
-        .querySelectorAll('#modal input[name="branches"]:not([value="all"])')
-        .forEach((input) =>
-            input.addEventListener('change', () => {
-                if (input.checked) allBranches.checked = false;
-            }),
-        );
+    branchInputs.forEach((input) =>
+        input.addEventListener('change', () => {
+            document.querySelector('#modal [data-branch-error]').hidden = true;
+            if (input.checked && allBranches) allBranches.checked = false;
+        }),
+    );
+    allBranches?.addEventListener('change', () => {
+        document.querySelector('#modal [data-branch-error]').hidden = true;
+    });
 }
 
 document.addEventListener('click', (event) => {
