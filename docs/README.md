@@ -1,0 +1,19 @@
+# Docs
+
+Start with [AGENTS.md](../AGENTS.md) (one-page overview, how to run, next steps).
+
+| Folder                       | What's inside                                     | Files                                                                                                                                                                                                                                                                                                                                                               |
+| ---------------------------- | ------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| [product/](product/)         | What we're building and why                       | [project-blueprint.md](product/project-blueprint.md)                                                                                                                                                                                                                                                                                                                |
+| [planning/](planning/)       | Phases, task lists, task loop, folder conventions | [development-plan.md](planning/development-plan.md)                                                                                                                                                                                                                                                                                                                 |
+| [design/](design/)           | How the UI looks and behaves                      | [ui-guidelines.md](design/ui-guidelines.md) / [reusable-ui-components.md](design/reusable-ui-components.md) / [appointment-module.md](design/appointment-module.md) / [plans-and-pricing.md](design/plans-and-pricing.md) · [mobile-ui-ux-cheat-sheet.md](design/mobile-ui-ux-cheat-sheet.md) · [accessibility-and-content.md](design/accessibility-and-content.md) |
+| [engineering/](engineering/) | Security and "what could crash it" checklists     | [security.md](engineering/security.md) · [performance-and-reliability.md](engineering/performance-and-reliability.md) · [launch-verification.md](engineering/launch-verification.md)                                                                                                                                                                                |
+| [legal/](legal/)             | Philippine privacy law, policies, consent wording | [legal-and-privacy-ph.md](legal/legal-and-privacy-ph.md) · [platform-policies.md](legal/platform-policies.md)                                                                                                                                                                                                                                                       |
+| [learning/](learning/)       | Personal learning material (not project rules)    | [ai-era-web-developer-roadmap.md](learning/ai-era-web-developer-roadmap.md)                                                                                                                                                                                                                                                                                         |
+
+Rules for adding docs:
+
+- Put a new file in the folder that matches its purpose; create a new folder only if none fits.
+- File names: `kebab-case.md`.
+- Link it from this table, and from AGENTS.md if every developer must know it.
+- Run `npm run check:fix` after editing (formats markdown).

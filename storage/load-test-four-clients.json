@@ -1,0 +1,112 @@
+{
+    "timestamp": "2026-10-06T14:43:23.947Z",
+    "dataset_members": 1000,
+    "baseline_attendance": 5040,
+    "concurrency": 4,
+    "server_workers": 4,
+    "measured_read_requests": 240,
+    "read_elapsed_ms": 12950,
+    "duplicate_check_passed": true,
+    "results": [
+        {
+            "scenario": "public website",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 179,
+            "p95_ms": 223,
+            "max_ms": 257,
+            "max_bytes": 19144,
+            "budget_ms": 200,
+            "budget_passed": false
+        },
+        {
+            "scenario": "dashboard",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 342,
+            "p95_ms": 482,
+            "max_ms": 500,
+            "max_bytes": 1005,
+            "budget_ms": 500,
+            "budget_passed": true
+        },
+        {
+            "scenario": "members",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 182,
+            "p95_ms": 387,
+            "max_ms": 397,
+            "max_bytes": 7317,
+            "budget_ms": 500,
+            "budget_passed": true
+        },
+        {
+            "scenario": "member search",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 180,
+            "p95_ms": 269,
+            "max_ms": 271,
+            "max_bytes": 4563,
+            "budget_ms": 500,
+            "budget_passed": true
+        },
+        {
+            "scenario": "attendance",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 213,
+            "p95_ms": 275,
+            "max_ms": 278,
+            "max_bytes": 6601,
+            "budget_ms": 500,
+            "budget_passed": true
+        },
+        {
+            "scenario": "payments",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 184,
+            "p95_ms": 257,
+            "max_ms": 266,
+            "max_bytes": 7702,
+            "budget_ms": 500,
+            "budget_passed": true
+        },
+        {
+            "scenario": "reports",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 205,
+            "p95_ms": 269,
+            "max_ms": 344,
+            "max_bytes": 3502,
+            "budget_ms": 500,
+            "budget_passed": true
+        },
+        {
+            "scenario": "member portal",
+            "requests": 30,
+            "errors": 0,
+            "p50_ms": 165,
+            "p95_ms": 231,
+            "max_ms": 333,
+            "max_bytes": 855,
+            "budget_ms": 500,
+            "budget_passed": true
+        },
+        {
+            "scenario": "check-in",
+            "requests": 8,
+            "errors": 0,
+            "p50_ms": 109,
+            "p95_ms": 158,
+            "max_ms": 158,
+            "max_bytes": 92,
+            "budget_ms": 300,
+            "budget_passed": true
+        }
+    ],
+    "note": "Local PHP HTTP servers; includes queueing. Not a Hostinger or 1,000-concurrent-user capacity result. Fictional check-in records and the test member agreement remain for manual testing."
+}

@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+return new class extends Migration
+{
+    /**
+     * "Try demo": temporary gyms and accounts, deleted by `php artisan demo:purge`.
+     */
+    public function up(): void
+    {
+        Schema::table('gyms', function (Blueprint $table) {
+            $table->timestamp('demo_expires_at')->nullable()->index()->after('status'); // null = real gym
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('is_demo')->default(false)->after('is_platform_admin');
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     */
+    public function down(): void
+    {
+        Schema::table('gyms', function (Blueprint $table) {
+            $table->dropColumn('demo_expires_at');
+        });
+
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('is_demo');
+        });
+    }
+};

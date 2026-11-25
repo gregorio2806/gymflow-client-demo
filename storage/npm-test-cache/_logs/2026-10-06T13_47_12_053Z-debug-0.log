@@ -1,0 +1,36 @@
+0 verbose cli C:\Program Files\nodejs\node.exe C:\Program Files\nodejs\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.6.2
+2 info using node@v24.13.0
+3 silly config load:file:C:\Program Files\nodejs\node_modules\npm\npmrc
+4 silly config load:file:C:\Users\Rhodwick\Documents\gym\storage\browser-check\.npmrc
+5 silly config load:file:C:\Users\Rhodwick\.npmrc
+6 silly config load:file:C:\Users\Rhodwick\Documents\gym\storage\browser-check\etc\npmrc
+7 verbose title npm install axe-core
+8 verbose argv "install" "--prefix" "storage/browser-check" "axe-core" "--no-audit" "--no-fund" "--cache" "storage/npm-test-cache"
+9 verbose logfile logs-max:10 dir:C:\Users\Rhodwick\Documents\gym\storage\npm-test-cache\_logs\2026-10-06T13_47_12_053Z-
+10 verbose logfile C:\Users\Rhodwick\Documents\gym\storage\npm-test-cache\_logs\2026-10-06T13_47_12_053Z-debug-0.log
+11 silly logfile done cleaning log files
+12 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+13 silly idealTree buildDeps
+14 silly fetch manifest axe-core@*
+15 silly packumentCache full:https://registry.npmjs.org/axe-core cache-miss
+16 http fetch GET 200 https://registry.npmjs.org/npm 360ms
+17 http fetch GET 200 https://registry.npmjs.org/axe-core 524ms (cache miss)
+18 silly packumentCache full:https://registry.npmjs.org/axe-core set size:undefined disposed:false
+19 silly placeDep ROOT axe-core@4.14.0 OK for:  want: *
+20 silly reify moves {}
+21 http cache axe-core@https://registry.npmjs.org/axe-core/-/axe-core-4.14.0.tgz 0ms (cache hit)
+22 silly tarball no local data for axe-core@https://registry.npmjs.org/axe-core/-/axe-core-4.14.0.tgz. Extracting by manifest.
+23 http fetch GET 200 https://registry.npmjs.org/axe-core/-/axe-core-4.14.0.tgz 300ms (cache miss)
+24 silly ADD node_modules/axe-core
+25 verbose cwd C:\Users\Rhodwick\Documents\gym
+26 verbose os Windows_NT 10.0.26200
+27 verbose node v24.13.0
+28 verbose npm  v11.6.2
+29 notice
+29 notice New minor version of npm available! 11.6.2 -> 11.21.0
+29 notice Changelog: https://github.com/npm/cli/releases/tag/v11.21.0
+29 notice To update run: npm install -g npm@11.21.0
+29 notice  { force: true, Symbol(proc-log.meta): true }
+30 verbose exit 0
+31 info ok
