@@ -44,7 +44,7 @@ defineOptions({
     },
 });
 const tabs = [
-    { key: 'subscription', title: 'Gym subscriptions' },
+    { key: 'subscription', title: 'Gym Access Plans' },
     { key: 'benefit', title: 'Membership plans' },
     { key: 'discounts', title: 'Discounts' },
     { key: 'package', title: 'Training packages' },
@@ -52,7 +52,7 @@ const tabs = [
 const sections = [
     {
         key: 'subscription',
-        title: 'Gym subscriptions',
+        title: 'Gym Access Plans',
         hint: 'Gym access rates. A membership plan is optional.',
         icon: CreditCard,
     },
@@ -86,6 +86,51 @@ function filter(tab = props.tab, status = props.status) {
     );
 }
 const discountOpen = ref(false);
+const planOpen = ref(false);
+const planKind = ref<OfferingKind>('subscription');
+const planForm = useForm<any>({
+    kind: 'subscription',
+    name: '',
+    duration_amount: 30,
+    duration_unit: 'days',
+    price_php: '',
+    inclusions: '',
+    configuration: {},
+});
+function addPlan(kind: OfferingKind) {
+    planKind.value = kind;
+    planForm.defaults({
+        kind,
+        name: '',
+        duration_amount: kind === 'benefit' ? 12 : 30,
+        duration_unit: kind === 'benefit' ? 'months' : 'days',
+        price_php: '',
+        inclusions: '',
+        configuration:
+            kind === 'benefit'
+                ? {
+                      discount_unit: 'percentage',
+                      discount_input: '0',
+                      eligible_plan_ids: [],
+                      applies_to_packages: false,
+                      applies_to_renewals: true,
+                      allow_renewal: true,
+                      deferred_start_allowed: true,
+                  }
+                : kind === 'package'
+                  ? { duration_mode: 'days', sessions: 3, coach_ids: [] }
+                  : {},
+    });
+    planForm.reset();
+    planForm.clearErrors();
+    planOpen.value = true;
+}
+function savePlan() {
+    planForm.post(Controller.store().url, {
+        preserveScroll: true,
+        onSuccess: () => (planOpen.value = false),
+    });
+}
 const discountId = ref<number | null>(null);
 const discount = useForm({
     name: '',
@@ -192,20 +237,15 @@ function saveDiscount() {
                         </p>
                     </div>
                 </div>
-                <Button v-if="canManage" size="sm" as-child
-                    ><Link
-                        :href="
-                            Controller.create({ query: { kind: section.key } })
-                        "
-                        ><Plus class="size-4" />Add
+                <Button v-if="canManage" size="sm" @click="addPlan(section.key as OfferingKind)"
+                    ><Plus class="size-4" />Add
                         {{
                             section.key === 'subscription'
-                                ? 'subscription'
+                                ? 'gym access plan'
                                 : section.key === 'benefit'
                                   ? 'membership plan'
                                   : 'package'
-                        }}</Link
-                    ></Button
+                        }}</Button
                 >
             </header>
             <RecordList
@@ -389,6 +429,34 @@ function saveDiscount() {
             </div>
         </nav>
     </div>
+    <Dialog v-model:open="planOpen">
+        <DialogContent class="max-h-[90dvh] overflow-y-auto">
+            <DialogHeader>
+                <DialogTitle>Add {{ planKind === 'subscription' ? 'gym access plan' : planKind === 'benefit' ? 'membership plan' : 'training package' }}</DialogTitle>
+                <DialogDescription>Set the name, price and term. You can edit the full details later.</DialogDescription>
+            </DialogHeader>
+            <form class="space-y-4" @submit.prevent="savePlan">
+                <label class="block space-y-1 text-sm">Name<Input v-model="planForm.name" required maxlength="255" /><InputError :message="planForm.errors.name" /></label>
+                <label class="block space-y-1 text-sm">Price (PHP)<Input v-model="planForm.price_php" inputmode="decimal" placeholder="e.g. 1500" required /><InputError :message="planForm.errors.price_php" /></label>
+                <div v-if="planKind !== 'package'" class="grid grid-cols-2 gap-3">
+                    <label class="space-y-1 text-sm">Duration<Input v-model="planForm.duration_amount" type="number" min="1" :max="planForm.duration_unit === 'months' ? 120 : 3650" required /><InputError :message="planForm.errors.duration_amount" /></label>
+                    <label class="space-y-1 text-sm">Unit<NativeSelect v-model="planForm.duration_unit" aria-label="Duration unit"><option value="days">Days</option><option value="months">Months</option></NativeSelect><InputError :message="planForm.errors.duration_unit" /></label>
+                </div>
+                <div v-else class="grid grid-cols-3 gap-3">
+                    <label class="space-y-1 text-sm">Sessions<Input v-model="planForm.configuration.sessions" type="number" min="1" max="10000" required /><InputError :message="planForm.errors['configuration.sessions']" /></label>
+                    <label class="space-y-1 text-sm">Valid for<Input v-model="planForm.duration_amount" type="number" min="1" max="3650" required /><InputError :message="planForm.errors.duration_amount" /></label>
+                    <label class="space-y-1 text-sm">Unit<NativeSelect v-model="planForm.duration_unit" aria-label="Validity unit"><option value="days">Days</option><option value="months">Months</option></NativeSelect></label>
+                </div>
+                <div v-if="planKind === 'benefit'" class="grid grid-cols-2 gap-3">
+                    <label class="space-y-1 text-sm">Discount type<NativeSelect v-model="planForm.configuration.discount_unit" aria-label="Discount type"><option value="percentage">Percentage</option><option value="peso">Peso</option></NativeSelect></label>
+                    <label class="space-y-1 text-sm">Discount value<Input v-model="planForm.configuration.discount_input" inputmode="decimal" required /><InputError :message="planForm.errors['configuration.discount_input']" /></label>
+                </div>
+                <label class="block space-y-1 text-sm">Description (optional)<textarea v-model="planForm.inclusions" rows="2" maxlength="2000" class="w-full rounded-md border bg-transparent px-3 py-2" /><InputError :message="planForm.errors.inclusions" /></label>
+                <div role="alert"><InputError v-for="(error, key) in planForm.errors" :key="key" :message="error" /></div>
+                <div class="flex justify-end gap-2"><Button type="button" variant="outline" @click="planOpen = false">Cancel</Button><Button type="submit" :disabled="planForm.processing"><Plus class="size-4" />{{ planForm.processing ? 'Saving…' : 'Add plan' }}</Button></div>
+            </form>
+        </DialogContent>
+    </Dialog>
     <Dialog v-model:open="discountOpen"
         ><DialogContent class="max-h-[90dvh] overflow-y-auto"
             ><DialogHeader

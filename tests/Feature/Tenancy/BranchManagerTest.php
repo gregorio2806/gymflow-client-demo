@@ -93,7 +93,7 @@ class BranchManagerTest extends TestCase
         $staff = User::factory()->memberOf($this->gym, GymRole::Staff)->create();
         $this->gym->users()->updateExistingPivot($staff->id, ['branch_id' => $this->assigned->id]);
         $invite = GymInvitation::factory()->create(['branch_id' => $this->assigned->id]);
-        $this->actingAs($this->manager)->post(route('staff.invitations.store'), ['email' => 'new@example.test', 'role' => 'staff', 'branch_id' => $this->assigned->id])->assertForbidden();
+        $this->actingAs($this->manager)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'new@example.test', 'role' => 'staff', 'branch_id' => $this->assigned->id])->assertForbidden();
         $this->actingAs($this->manager)->patch(route('staff.update', $staff), ['name' => 'Hacked', 'role' => 'branch-manager'])->assertForbidden();
         $this->actingAs($this->manager)->delete(route('staff.invitations.destroy', $invite))->assertForbidden();
         $this->actingAs($this->manager)->get(route('gym.settings.edit'))->assertForbidden();
@@ -103,7 +103,7 @@ class BranchManagerTest extends TestCase
     public function test_owner_can_invite_manager_even_when_staff_places_are_full(): void
     {
         User::factory()->count(5)->memberOf($this->gym, GymRole::Staff)->create();
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'manager@example.test', 'role' => 'branch-manager', 'branch_id' => $this->gym->mainBranch()->id])->assertSessionHasNoErrors();
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'manager@example.test', 'role' => 'branch-manager', 'branch_id' => $this->gym->mainBranch()->id])->assertSessionHasNoErrors();
         $invite = GymInvitation::sole();
         $this->assertSame(GymRole::BranchManager, $invite->role);
         $this->assertSame(5, app(PlanLimits::class)->staffUsed($this->gym));
@@ -126,10 +126,10 @@ class BranchManagerTest extends TestCase
     public function test_manager_role_requires_multi_branch_and_an_explicit_valid_branch(): void
     {
         $foreign = Gym::factory()->create()->mainBranch();
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'missing@example.test', 'role' => 'branch-manager'])->assertSessionHasErrors('branch_id');
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'foreign@example.test', 'role' => 'branch-manager', 'branch_id' => $foreign->id])->assertSessionHasErrors('branch_id');
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'missing@example.test', 'role' => 'branch-manager'])->assertSessionHasErrors('branch_id');
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'foreign@example.test', 'role' => 'branch-manager', 'branch_id' => $foreign->id])->assertSessionHasErrors('branch_id');
         $this->gym->subscription->update(['plan' => 'pro']);
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'pro@example.test', 'role' => 'branch-manager', 'branch_id' => $this->assigned->id])->assertSessionHasErrors('role');
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'pro@example.test', 'role' => 'branch-manager', 'branch_id' => $this->assigned->id])->assertSessionHasErrors('role');
     }
 
     public function test_manager_invitation_acceptance_preserves_assignment(): void

@@ -19,12 +19,12 @@ class InviteStaff
     /**
      * Invite someone to the gym by email. Re-inviting the same email replaces the old invitation.
      */
-    public function handle(Gym $gym, string $email, GymRole $role, int|array|null $branchId = null): GymInvitation
+    public function handle(Gym $gym, string $name, string $email, GymRole $role, int|array|null $branchId = null): GymInvitation
     {
-        return app(CurrentGym::class)->runAs($gym, fn () => DB::transaction(fn () => $this->createInvitation($gym, $email, $role, $branchId)));
+        return app(CurrentGym::class)->runAs($gym, fn () => DB::transaction(fn () => $this->createInvitation($gym, $name, $email, $role, $branchId)));
     }
 
-    private function createInvitation(Gym $gym, string $email, GymRole $role, int|array|null $branchId): GymInvitation
+    private function createInvitation(Gym $gym, string $name, string $email, GymRole $role, int|array|null $branchId): GymInvitation
     {
         Gym::whereKey($gym->id)->lockForUpdate()->firstOrFail();
         $gym->subscription()->lockForUpdate()->firstOrFail();
@@ -45,7 +45,7 @@ class InviteStaff
         }
         GymInvitation::where('email', $email)->whereNull('accepted_at')->delete();
 
-        $invitation = new GymInvitation(['email' => $email, 'role' => $role]);
+        $invitation = new GymInvitation(['name' => trim($name), 'email' => $email, 'role' => $role]);
         $invitation->branch_id = $ids[0];
         $invitation->branch_ids = $ids;
         $invitation->invited_by = auth()->id();
@@ -55,7 +55,7 @@ class InviteStaff
         DB::afterCommit(fn () => Notification::route('mail', $email)
             ->notify(new GymInvitationNotification($gym, $role->value, $token)));
 
-        Audit::log('staff.invited', $invitation, ['after' => ['email' => $email, 'role' => $role->value, 'branch_id' => $ids[0], 'branch_ids' => $ids]]);
+        Audit::log('staff.invited', $invitation, ['after' => ['name' => $invitation->name, 'email' => $email, 'role' => $role->value, 'branch_id' => $ids[0], 'branch_ids' => $ids]]);
 
         return $invitation;
     }

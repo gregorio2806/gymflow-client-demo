@@ -1,8 +1,8 @@
-# GymFlow static client demo
+# Gym SaaS static client demo
 
 This folder is a standalone presentation website. It does not use Laravel, PHP, a database, an API, or a login service.
 
-The demo starts with fictional Iron House Fitness data. Adding members, checking people in, changing stock, and editing the public website are stored in the browser's `localStorage`. The **Reset demo data** button clears those changes and restores the sample data.
+The demo starts with fictional Iron House Fitness data across the application modules. Adding members, checking people in, changing stock, and editing the public website are stored only in the browser tab's `sessionStorage`. Changes survive a refresh during the presentation and disappear when the session/tab is closed. The **Reset demo data** button clears those changes and restores the sample data.
 
 ## Test locally
 

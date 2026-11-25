@@ -51,6 +51,7 @@ const props = defineProps<{
     }[];
     invitations: {
         id: number;
+        name: string | null;
         email: string;
         role: GymRole;
         expiresAt: string;
@@ -67,6 +68,7 @@ defineOptions({
 
 const page = usePage();
 const inviteRole = ref('staff');
+const addUserOpen = ref(false);
 const editRoles = ref<Record<number, string>>({});
 function branchNames(ids: number[]) {
     return ids
@@ -115,8 +117,8 @@ const expiryDate = (iso: string) =>
         </section>
         <section v-if="canManage" class="max-w-xl">
             <Heading
-                title="Invite staff"
-                description="We'll email them a link to join your gym. Staff can manage members and check-ins; coaches manage workouts."
+                title="Users"
+                description="Add a staff member, coach or branch manager. We’ll email them an invitation to set up their account."
             />
 
             <p class="mb-4 text-sm text-muted-foreground">
@@ -145,31 +147,48 @@ const expiryDate = (iso: string) =>
                 Inviting staff is turned off in the demo (it sends real emails).
                 Create your own gym to invite your team.
             </p>
+            <Dialog v-model:open="addUserOpen">
+                <DialogTrigger as-child>
+                    <Button v-if="!page.props.demo" data-test="add-user-button">
+                        <MailPlus class="size-4" /> Add user
+                    </Button>
+                </DialogTrigger>
+                <DialogContent class="max-h-[90dvh] overflow-y-auto">
+                    <DialogHeader>
+                        <DialogTitle>Add user</DialogTitle>
+                        <DialogDescription>We’ll email an account invitation to the address you enter.</DialogDescription>
+                    </DialogHeader>
             <Form
-                v-else
+                v-if="!page.props.demo"
                 v-bind="StaffController.invite.form()"
-                :reset-on-success="['email']"
+                :reset-on-success="['name', 'email']"
                 v-slot="{ errors, processing }"
-                class="grid gap-4 sm:grid-cols-[1fr_10rem_auto] sm:items-end"
+                class="space-y-4"
+                @success="addUserOpen = false"
             >
+                <div class="grid gap-2 sm:col-span-full">
+                    <Label for="invite-name">Name</Label>
+                    <Input id="invite-name" name="name" required maxlength="255" autocomplete="name" placeholder="Full name" />
+                    <InputError :message="errors.name" />
+                </div>
                 <div class="grid gap-2">
-                    <Label for="email">Email address</Label>
+                    <Label for="invite-email">Email address</Label>
                     <Input
-                        id="email"
+                        id="invite-email"
                         type="email"
                         name="email"
                         required
                         maxlength="255"
-                        autocomplete="off"
+                        autocomplete="email"
                         placeholder="e.g. juan@example.com"
                     />
                     <InputError :message="errors.email" />
                 </div>
 
                 <div class="grid gap-2">
-                    <Label for="role">Role</Label>
+                    <Label for="invite-role">Role</Label>
                     <NativeSelect
-                        id="role"
+                        id="invite-role"
                         name="role"
                         required
                         v-model="inviteRole"
@@ -195,7 +214,7 @@ const expiryDate = (iso: string) =>
                 >
                     <Spinner v-if="processing" />
                     <MailPlus v-else class="size-4" />
-                    {{ processing ? 'Sending…' : 'Send invite' }}
+                    {{ processing ? 'Sending...' : 'Create user & send invite' }}
                 </Button>
                 <div class="grid gap-2 sm:col-span-full">
                     <TeamBranchSelect
@@ -211,6 +230,8 @@ const expiryDate = (iso: string) =>
                     <InputError :message="errors.branch_id" />
                 </div>
             </Form>
+                </DialogContent>
+            </Dialog>
         </section>
 
         <!-- Pending invitations -->
@@ -237,7 +258,7 @@ const expiryDate = (iso: string) =>
                 ><template #cell-email="{ row: invitation }"
                     ><span class="font-medium break-all">{{
                         invitation.email
-                    }}</span></template
+                    }}</span><span v-if="invitation.name" class="block text-xs text-muted-foreground">{{ invitation.name }}</span></template
                 ><template #cell-role="{ row: invitation }">{{
                     roleLabel[invitation.role]
                 }}</template

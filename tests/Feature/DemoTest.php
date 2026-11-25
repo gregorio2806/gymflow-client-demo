@@ -88,7 +88,7 @@ class DemoTest extends TestCase
         Notification::fake();
         $this->startDemo();
 
-        $this->post(route('staff.invitations.store'), ['email' => 'victim@example.com', 'role' => 'staff'])
+        $this->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'victim@example.com', 'role' => 'staff'])
             ->assertForbidden();
 
         Notification::assertNothingSent();

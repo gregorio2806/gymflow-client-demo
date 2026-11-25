@@ -373,13 +373,13 @@ const overviewHistory = computed(() =>
                     <div v-else class="grid items-start gap-4 md:grid-cols-2">
                         <section class="rounded-xl border p-4 sm:p-5">
                             <h3 class="mb-4 text-base font-semibold">
-                                Gym subscriptions
+                                Gym access plan
                             </h3>
                             <p
                                 v-if="!currentSubscriptions.length"
                                 class="text-sm text-muted-foreground"
                             >
-                                No current gym subscriptions.
+                                No current gym access plans.
                             </p>
                             <ul v-else class="divide-y">
                                 <li

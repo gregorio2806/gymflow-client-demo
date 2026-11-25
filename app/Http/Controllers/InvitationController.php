@@ -45,6 +45,7 @@ class InvitationController extends Controller
             'invitation' => [
                 'gymName' => Gym::findOrFail($invitation->gym_id)->name,
                 'role' => $invitation->role->value,
+                'name' => $invitation->name,
                 'email' => $invitation->email,
             ],
             // Guests: new people set a name + password here (public sign-up is closed); existing accounts log in.

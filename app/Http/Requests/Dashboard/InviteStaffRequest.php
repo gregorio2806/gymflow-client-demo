@@ -24,6 +24,7 @@ class InviteStaffRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'name' => ['required', 'string', 'max:255'],
             'branch_id' => [Rule::requiredIf(fn () => $this->input('role') === 'branch-manager' && ! $this->has('branch_ids')), 'nullable', 'integer', Rule::exists('branches', 'id')->where('gym_id', app(CurrentGym::class)->id())],
             'branch_ids' => ['sometimes', 'required', 'array', 'min:1', 'max:100'],
             'branch_ids.*' => ['required', 'integer', 'distinct', Rule::exists('branches', 'id')->where('gym_id', app(CurrentGym::class)->id())],

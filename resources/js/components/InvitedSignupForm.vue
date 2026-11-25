@@ -23,6 +23,7 @@ async function focusError() {
  */
 defineProps<{
     email: string;
+    name?: string | null;
     action: { action: string; method: 'post' };
     submitLabel: string;
     legal: LegalBundle;
@@ -64,6 +65,7 @@ defineProps<{
                 required
                 autocomplete="name"
                 placeholder="Full name"
+                :default-value="name ?? ''"
                 :aria-invalid="!!errors.name"
                 :aria-describedby="
                     errors.name ? 'signup-name-error' : undefined

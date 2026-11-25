@@ -22,6 +22,12 @@ function toggle(id: number, checked: boolean) {
               ? [...selected.value, id]
               : selected.value.filter((value) => value !== id);
 }
+const allSelected = () =>
+    props.branches.length > 0 &&
+    props.branches.every((branch) => selected.value.includes(branch.id));
+function toggleAll(checked: boolean) {
+    selected.value = checked ? props.branches.map((branch) => branch.id) : [];
+}
 </script>
 
 <template>
@@ -39,6 +45,18 @@ function toggle(id: number, checked: boolean) {
         <div
             class="grid max-h-40 gap-1 overflow-y-auto rounded-md border p-2 sm:grid-cols-2"
         >
+            <label
+                v-if="role !== 'branch-manager' && branches.length > 1"
+                class="flex cursor-pointer items-center gap-2 rounded px-2 py-2 text-sm font-medium hover:bg-muted sm:col-span-2"
+            >
+                <input
+                    type="checkbox"
+                    :checked="allSelected()"
+                    class="size-4 accent-primary"
+                    @change="toggleAll(($event.target as HTMLInputElement).checked)"
+                />
+                All branches
+            </label>
             <label
                 v-for="branch in branches"
                 :key="`${role}-${branch.id}`"

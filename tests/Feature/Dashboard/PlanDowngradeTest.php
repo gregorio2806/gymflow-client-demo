@@ -114,7 +114,7 @@ class PlanDowngradeTest extends TestCase
         $this->assertTrue($second->refresh()->is_active);
         $this->assertFalse($this->gym->branches()->findOrFail($mainId)->is_active);
         $this->assertFalse($this->gym->refresh()->needs_branch_selection);
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'new@example.test', 'role' => 'staff', 'branch_id' => $mainId])->assertSessionHasErrors('branch_id');
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'new@example.test', 'role' => 'staff', 'branch_id' => $mainId])->assertSessionHasErrors('branch_id');
     }
 
     public function test_reducing_extra_branches_and_branch_reactivation_obey_capacity(): void

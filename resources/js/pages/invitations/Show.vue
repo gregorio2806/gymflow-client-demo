@@ -15,6 +15,7 @@ defineProps<{
     invitation?: {
         gymName: string;
         role: string;
+        name: string | null;
         email: string;
     };
     token?: string;
@@ -70,6 +71,7 @@ defineOptions({
             <InvitedSignupForm
                 v-else
                 :email="invitation.email"
+                :name="invitation.name"
                 :action="InvitationController.register.form(token)"
                 :submit-label="`Create account and join ${invitation.gymName}`"
                 :legal="legal"

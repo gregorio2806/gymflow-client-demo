@@ -109,7 +109,7 @@ const statusDialog = ref<number | null>(null);
         </section>
         <section>
             <h3 class="mb-4 text-base font-semibold">
-                Gym subscription history ({{ subscriptions.total }})
+                Gym access plan history ({{ subscriptions.total }})
             </h3>
             <p
                 v-if="!subscriptions.data.length"
@@ -135,7 +135,7 @@ const statusDialog = ref<number | null>(null);
                     { key: 'status', label: 'Status', width: '12%' },
                     { key: 'actions', label: 'Actions', width: '24%' },
                 ]"
-                caption="Gym subscription history"
+                caption="Gym access plan history"
                 v-else
                 row-key="id"
                 wide

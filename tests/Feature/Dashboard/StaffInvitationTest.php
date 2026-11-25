@@ -51,7 +51,7 @@ class StaffInvitationTest extends TestCase
     public function test_owner_can_invite_staff_and_an_email_is_sent()
     {
         $this->actingAs($this->owner)
-            ->post(route('staff.invitations.store'), ['email' => 'Juan@Example.com', 'role' => 'staff'])
+            ->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'Juan@Example.com', 'role' => 'staff'])
             ->assertRedirect(route('staff.index'));
 
         app(CurrentGym::class)->set($this->gym);
@@ -67,7 +67,7 @@ class StaffInvitationTest extends TestCase
     public function test_only_a_hash_of_the_token_is_stored()
     {
         $this->actingAs($this->owner)
-            ->post(route('staff.invitations.store'), ['email' => 'juan@example.com', 'role' => 'staff']);
+            ->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'juan@example.com', 'role' => 'staff']);
 
         Notification::assertSentTo(new AnonymousNotifiable, GymInvitationNotification::class, function ($notification) {
             $this->assertDatabaseMissing('gym_invitations', ['token_hash' => $notification->token]);
@@ -80,21 +80,21 @@ class StaffInvitationTest extends TestCase
     public function test_owner_role_cannot_be_invited()
     {
         $this->actingAs($this->owner)
-            ->post(route('staff.invitations.store'), ['email' => 'juan@example.com', 'role' => 'owner'])
+            ->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'juan@example.com', 'role' => 'owner'])
             ->assertSessionHasErrors('role');
     }
 
     public function test_existing_team_members_cannot_be_invited_again()
     {
         $this->actingAs($this->owner)
-            ->post(route('staff.invitations.store'), ['email' => $this->owner->email, 'role' => 'staff'])
+            ->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => $this->owner->email, 'role' => 'staff'])
             ->assertSessionHasErrors('email');
     }
 
     public function test_reinviting_replaces_the_previous_invitation()
     {
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'juan@example.com', 'role' => 'staff']);
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'juan@example.com', 'role' => 'coach']);
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'juan@example.com', 'role' => 'staff']);
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'juan@example.com', 'role' => 'coach']);
 
         $this->assertDatabaseCount('gym_invitations', 1);
         $this->assertDatabaseHas('gym_invitations', ['email' => 'juan@example.com', 'role' => 'coach']);
@@ -123,7 +123,7 @@ class StaffInvitationTest extends TestCase
 
         $this->actingAs($staff)->get(route('staff.index'))->assertForbidden();
         $this->actingAs($staff)
-            ->post(route('staff.invitations.store'), ['email' => 'x@example.com', 'role' => 'staff'])
+            ->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'x@example.com', 'role' => 'staff'])
             ->assertForbidden();
 
         Notification::assertNothingSent();

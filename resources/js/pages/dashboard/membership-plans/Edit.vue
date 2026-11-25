@@ -45,7 +45,7 @@ defineOptions({
 });
 const title = computed(() =>
     props.kind === 'subscription'
-        ? 'gym subscription'
+        ? 'gym access plan'
         : props.kind === 'benefit'
           ? 'membership plan'
           : 'training package',

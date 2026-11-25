@@ -32,7 +32,7 @@ class GymInvitation extends Model
 
     public const VALID_FOR_DAYS = 7;
 
-    protected $fillable = ['email', 'role'];
+    protected $fillable = ['name', 'email', 'role'];
 
     protected $hidden = ['token_hash'];
 

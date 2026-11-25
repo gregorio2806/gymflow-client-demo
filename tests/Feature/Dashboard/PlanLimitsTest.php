@@ -48,11 +48,11 @@ class PlanLimitsTest extends TestCase
     {
         $this->gym->subscription()->update(['plan' => $plan]);
         User::factory()->count($limit - 1)->memberOf($this->gym, GymRole::Coach)->create();
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'last@example.test', 'role' => 'staff'])->assertSessionHasNoErrors();
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'over@example.test', 'role' => 'coach'])->assertSessionHasErrors('email');
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'last@example.test', 'role' => 'staff'])->assertSessionHasNoErrors();
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'over@example.test', 'role' => 'coach'])->assertSessionHasErrors('email');
         $this->assertDatabaseMissing('gym_invitations', ['email' => 'over@example.test']);
         // Refreshing a reserved invitation must not consume a second place.
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'last@example.test', 'role' => 'coach'])->assertSessionHasNoErrors();
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'last@example.test', 'role' => 'coach'])->assertSessionHasNoErrors();
     }
 
     public function test_expired_and_other_gym_invitations_do_not_use_places(): void
@@ -60,7 +60,7 @@ class PlanLimitsTest extends TestCase
         GymInvitation::factory()->expired()->create(['gym_id' => $this->gym->id]);
         $other = Gym::factory()->create();
         app(CurrentGym::class)->runAs($other, fn () => GymInvitation::factory()->count(5)->create());
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'new@example.test', 'role' => 'staff'])->assertSessionHasNoErrors();
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'new@example.test', 'role' => 'staff'])->assertSessionHasNoErrors();
     }
 
     public function test_acceptance_rechecks_capacity_after_plan_change(): void
@@ -125,8 +125,8 @@ class PlanLimitsTest extends TestCase
         $this->gym->subscription()->update(['plan' => 'multi_branch']);
         $second = Branch::create(['name' => 'Second']);
         User::factory()->count(5)->memberOf($this->gym, GymRole::Staff)->create();
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'full@example.test', 'role' => 'staff', 'branch_id' => $this->gym->mainBranch()->id])->assertSessionHasErrors('email');
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'room@example.test', 'role' => 'coach', 'branch_id' => $second->id])->assertSessionHasNoErrors();
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'full@example.test', 'role' => 'staff', 'branch_id' => $this->gym->mainBranch()->id])->assertSessionHasErrors('email');
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'room@example.test', 'role' => 'coach', 'branch_id' => $second->id])->assertSessionHasNoErrors();
         $invitation = GymInvitation::sole();
         $this->assertSame($second->id, $invitation->branch_id);
         $user = User::factory()->create(['email' => 'room@example.test']);
@@ -152,7 +152,7 @@ class PlanLimitsTest extends TestCase
     {
         $foreign = Gym::factory()->create()->mainBranch();
         $staff = User::factory()->memberOf($this->gym, GymRole::Staff)->create();
-        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['email' => 'new@example.test', 'role' => 'staff', 'branch_id' => $foreign->id])->assertSessionHasErrors('branch_id');
+        $this->actingAs($this->owner)->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'new@example.test', 'role' => 'staff', 'branch_id' => $foreign->id])->assertSessionHasErrors('branch_id');
         $this->actingAs($this->owner)->patch(route('staff.update', $staff), ['name' => $staff->name, 'role' => 'staff', 'branch_id' => $foreign->id])->assertSessionHasErrors('branch_id');
         $this->assertDatabaseCount('gym_invitations', 0);
         $this->assertSame($this->gym->mainBranch()->id, $this->gym->users()->whereKey($staff->id)->sole()->pivot->branch_id);

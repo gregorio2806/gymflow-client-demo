@@ -352,7 +352,7 @@ function save() {
                 </p>
             </section>
             <section class="space-y-4 rounded-xl border bg-card p-4 sm:p-5">
-                <h2 class="font-semibold">Gym subscription</h2>
+                <h2 class="font-semibold">Gym access plan</h2>
                 <p class="text-xs text-muted-foreground">
                     Choose gym access, a separate membership plan, or training
                     packages.
@@ -361,7 +361,7 @@ function save() {
                     >Subscription<NativeSelect
                         aria-label="Subscription"
                         v-model="form.membership_plan_id"
-                        ><option value="">No gym subscription</option>
+                        ><option value="">No gym access plan</option>
                         <option
                             v-for="p in offerings.filter(
                                 (p) => p.kind === 'subscription',

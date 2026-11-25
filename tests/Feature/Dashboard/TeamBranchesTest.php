@@ -73,7 +73,7 @@ class TeamBranchesTest extends TestCase
 
     public function test_invitation_acceptance_and_pending_capacity_use_all_assignments(): void
     {
-        $this->post(route('staff.invitations.store'), ['email' => 'multi@example.invalid', 'role' => 'coach', 'branch_ids' => $this->ids()])->assertSessionHasNoErrors();
+        $this->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'multi@example.invalid', 'role' => 'coach', 'branch_ids' => $this->ids()])->assertSessionHasNoErrors();
         $invite = GymInvitation::sole();
         $this->assertSame($this->ids(), TeamBranches::ids($invite));
         $limits = app(PlanLimits::class);
@@ -95,7 +95,7 @@ class TeamBranchesTest extends TestCase
         $this->update()->assertSessionHasErrors('branch_ids');
         $this->assertSame([$this->ids()[0]], TeamBranches::ids($this->gym->users()->find($this->staff->id)->pivot));
         $this->assertSame(GymRole::Staff, $this->staff->roleIn($this->gym));
-        $this->post(route('staff.invitations.store'), ['email' => 'foreign@example.invalid', 'role' => 'coach', 'branch_ids' => [$foreign]])->assertSessionHasErrors('branch_ids.0');
+        $this->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'foreign@example.invalid', 'role' => 'coach', 'branch_ids' => [$foreign]])->assertSessionHasErrors('branch_ids.0');
     }
 
     public function test_full_secondary_branch_blocks_assignment_and_reactivation(): void

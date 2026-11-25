@@ -70,6 +70,7 @@ class StaffController extends Controller
             ]),
             'invitations' => $invitePage ? $invitePage->getCollection()->map(fn (GymInvitation $invitation) => [
                 'id' => $invitation->id,
+                'name' => $invitation->name,
                 'email' => $invitation->email,
                 'role' => $invitation->role->value,
                 'branchId' => $invitation->branch_id,
@@ -86,6 +87,7 @@ class StaffController extends Controller
     {
         $invitation = $inviteStaff->handle(
             $this->currentGym->get(),
+            $request->validated('name'),
             $request->validated('email'),
             GymRole::from($request->validated('role')),
             $request->validated('branch_ids') ?? $request->validated('branch_id'),

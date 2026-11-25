@@ -22,8 +22,8 @@
                 <div class="brand">
                     <div class="brand-mark" aria-hidden="true">✦</div>
                     <div>
-                        <strong>GymFlow</strong>
-                        <span>Management SaaS</span>
+                        <strong>Gym SaaS</strong>
+                        <span>Gym management</span>
                     </div>
                 </div>
 
@@ -33,7 +33,7 @@
                     <span class="workspace-plan">Pro plan · Manila</span>
                 </div>
 
-                <nav class="nav-list">
+                <nav class="nav-list legacy-nav" aria-hidden="true">
                     <button
                         class="nav-item active"
                         data-view="dashboard"
@@ -64,6 +64,138 @@
                         <span class="nav-icon">◉</span>Website
                     </button>
                 </nav>
+                <nav class="nav-list system-nav">
+                    <button
+                        class="nav-item active"
+                        data-view="dashboard"
+                        type="button"
+                    >
+                        <span class="nav-icon">▦</span>Dashboard
+                    </button>
+                    <div class="nav-group">
+                        <div class="nav-group-title">
+                            <span class="nav-icon">▣</span>Attendance
+                            <span class="nav-chevron">⌃</span>
+                        </div>
+                        <button
+                            class="nav-subitem"
+                            data-view="checkin"
+                            type="button"
+                        >
+                            Check-in</button
+                        ><button
+                            class="nav-subitem"
+                            data-view="attendance"
+                            type="button"
+                        >
+                            Attendance History
+                        </button>
+                    </div>
+                    <button class="nav-item" data-view="products" type="button">
+                        <span class="nav-icon">▧</span>Product inventory
+                    </button>
+                    <div class="nav-group">
+                        <div class="nav-group-title">
+                            <span class="nav-icon">▤</span>Appointment
+                            <span class="nav-chevron">⌄</span>
+                        </div>
+                        <button
+                            class="nav-subitem"
+                            data-view="appointments"
+                            type="button"
+                        >
+                            Appointments</button
+                        ><button
+                            class="nav-subitem"
+                            data-view="calendar"
+                            type="button"
+                        >
+                            Coach calendar
+                        </button>
+                    </div>
+                    <div class="nav-group">
+                        <div class="nav-group-title">
+                            <span class="nav-icon">♙</span>Members
+                            <span class="nav-chevron">⌄</span>
+                        </div>
+                        <button
+                            class="nav-subitem"
+                            data-view="members"
+                            type="button"
+                        >
+                            All members</button
+                        ><button
+                            class="nav-subitem"
+                            data-view="freeze"
+                            type="button"
+                        >
+                            Freeze records
+                        </button>
+                    </div>
+                    <div class="nav-group">
+                        <div class="nav-group-title">
+                            <span class="nav-icon">◇</span>Plans &amp; Pricing
+                            <span class="nav-chevron">⌄</span>
+                        </div>
+                        <button
+                            class="nav-subitem"
+                            data-view="plans"
+                            type="button"
+                        >
+                            Gym Access Plans</button
+                        ><button
+                            class="nav-subitem"
+                            data-view="benefits"
+                            type="button"
+                        >
+                            Membership plans</button
+                        ><button
+                            class="nav-subitem"
+                            data-view="training"
+                            type="button"
+                        >
+                            Training packages
+                        </button>
+                    </div>
+                    <div class="nav-group">
+                        <div class="nav-group-title">
+                            <span class="nav-icon">▥</span>Reports
+                            <span class="nav-chevron">⌄</span>
+                        </div>
+                        <button
+                            class="nav-subitem"
+                            data-view="reports"
+                            type="button"
+                        >
+                            Revenue</button
+                        ><button
+                            class="nav-subitem"
+                            data-view="payments-report"
+                            type="button"
+                        >
+                            Membership &amp; Payments
+                        </button>
+                    </div>
+                    <button class="nav-item" data-view="website" type="button">
+                        <span class="nav-icon">◉</span>Website
+                    </button>
+                    <div class="nav-group">
+                        <div class="nav-group-title">
+                            <span class="nav-icon">♧</span>Users
+                            <span class="nav-chevron">⌄</span>
+                        </div>
+                        <button
+                            class="nav-subitem"
+                            data-view="users"
+                            type="button"
+                        >
+                            Staff / Coaches
+                        </button>
+                    </div>
+                    <button class="nav-item" data-view="branches" type="button">
+                        <span class="nav-icon">⌖</span>Branches
+                    </button>
+                </nav>
 
                 <div class="sidebar-footer">
                     <div class="user-chip">
@@ -89,12 +221,36 @@
                     </button>
                     <div>
                         <span class="breadcrumb"
-                            >GymFlow /
+                            >Gym SaaS /
                             <span id="breadcrumb-current">Dashboard</span></span
                         >
                         <h1 id="page-title">Dashboard</h1>
                     </div>
                     <div class="topbar-actions">
+                        <select
+                            class="topbar-branch"
+                            aria-label="Current branch"
+                        >
+                            <option>All branches</option>
+                            <option>Main branch</option>
+                            <option>Makati branch</option>
+                        </select>
+                        <button
+                            class="topbar-icon"
+                            data-action="show-toast"
+                            type="button"
+                            aria-label="Notifications"
+                        >
+                            ♧
+                        </button>
+                        <button
+                            class="topbar-icon"
+                            data-action="show-toast"
+                            type="button"
+                            aria-label="Toggle dark mode"
+                        >
+                            ☾
+                        </button>
                         <button
                             class="outline-button"
                             data-view="website"
@@ -244,6 +400,494 @@
                             </button>
                         </article>
                     </div>
+                </section>
+
+                <section
+                    id="view-checkin"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">ATTENDANCE</span>
+                            <h2>Check-in</h2>
+                            <p>
+                                Search a member or scan an attendance QR code.
+                            </p>
+                        </div>
+                        <span class="status-badge active"
+                            >QR attendance enabled</span
+                        >
+                    </div>
+                    <div class="checkin-layout">
+                        <article class="panel">
+                            <div class="method-tabs">
+                                <button class="active" type="button">
+                                    Search member</button
+                                ><button type="button" data-action="show-toast">
+                                    Scan QR
+                                </button>
+                            </div>
+                            <div class="checkin-controls">
+                                <select id="checkin-branch">
+                                    <option>Main branch</option>
+                                    <option>Makati branch</option>
+                                </select>
+                                <div class="search-box">
+                                    <span>⌕</span
+                                    ><input
+                                        id="checkin-search"
+                                        type="search"
+                                        placeholder="Search member name or ID…"
+                                    />
+                                </div>
+                            </div>
+                            <div
+                                id="checkin-members"
+                                class="member-picker"
+                            ></div>
+                            <button
+                                class="primary-button full-width"
+                                data-action="check-in"
+                                type="button"
+                            >
+                                Check in selected member
+                            </button>
+                        </article>
+                        <article class="panel camera-panel">
+                            <span class="eyebrow">QR SCANNER</span>
+                            <div class="qr-frame">
+                                <span>▦</span><strong>Ready to scan</strong
+                                ><small
+                                    >Camera access is simulated in this
+                                    demo</small
+                                >
+                            </div>
+                            <button
+                                class="outline-button full-width"
+                                data-action="show-toast"
+                                type="button"
+                            >
+                                Start camera
+                            </button>
+                            <p class="helper-text">
+                                Attendance QR images are private credentials.
+                                The live system decodes them on-device before
+                                checking the member in.
+                            </p>
+                        </article>
+                    </div>
+                    <article class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">TODAY</span>
+                                <h3>Recent check-ins</h3>
+                            </div>
+                            <button
+                                class="text-button"
+                                data-view="attendance"
+                                type="button"
+                            >
+                                View history
+                            </button>
+                        </div>
+                        <div id="checkin-recent" class="mini-list"></div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-appointments"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">APPOINTMENTS</span>
+                            <h2>Appointments</h2>
+                            <p>
+                                Manage member and customer bookings across your
+                                gym.
+                            </p>
+                        </div>
+                        <button
+                            class="primary-button"
+                            data-action="show-toast"
+                            type="button"
+                        >
+                            ＋ New appointment
+                        </button>
+                    </div>
+                    <div id="appointment-kpis" class="kpi-grid compact"></div>
+                    <article class="panel">
+                        <div class="toolbar">
+                            <div class="search-box">
+                                <span>⌕</span
+                                ><input
+                                    placeholder="Search member, coach or service…"
+                                />
+                            </div>
+                            <select>
+                                <option>All statuses</option>
+                                <option>Confirmed</option>
+                                <option>Completed</option></select
+                            ><select>
+                                <option>All coaches</option>
+                                <option>Marco Santos</option>
+                                <option>Bea Ramos</option>
+                            </select>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Member / customer</th>
+                                        <th>Service</th>
+                                        <th>Coach</th>
+                                        <th>Date &amp; time</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="appointments-table"></tbody>
+                            </table>
+                        </div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-calendar"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">COACH CALENDAR</span>
+                            <h2>Coach calendar</h2>
+                            <p>
+                                View sessions and availability for your coaching
+                                team.
+                            </p>
+                        </div>
+                        <button
+                            class="outline-button"
+                            data-action="show-toast"
+                            type="button"
+                        >
+                            Edit availability
+                        </button>
+                    </div>
+                    <article class="panel">
+                        <div class="calendar-toolbar">
+                            <button class="outline-button" type="button">
+                                ‹</button
+                            ><strong>November 2026</strong
+                            ><button class="outline-button" type="button">
+                                ›</button
+                            ><select>
+                                <option>Marco Santos</option>
+                                <option>Bea Ramos</option></select
+                            ><button class="text-button" type="button">
+                                Today
+                            </button>
+                        </div>
+                        <div class="week-grid">
+                            <span>MON</span><span>TUE</span><span>WED</span
+                            ><span>THU</span><span>FRI</span><span>SAT</span
+                            ><span>SUN</span>
+                        </div>
+                        <div id="calendar-grid" class="calendar-grid"></div>
+                    </article>
+                    <article class="panel">
+                        <div class="panel-heading">
+                            <div>
+                                <span class="eyebrow">SELECTED DAY</span>
+                                <h3>Tuesday, November 25</h3>
+                            </div>
+                        </div>
+                        <div id="calendar-sessions" class="session-list"></div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-freeze"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">MEMBERS</span>
+                            <h2>Freeze records</h2>
+                            <p>
+                                Review subscription access pauses and
+                                resumptions.
+                            </p>
+                        </div>
+                        <button
+                            class="outline-button"
+                            data-view="members"
+                            type="button"
+                        >
+                            Back to members
+                        </button>
+                    </div>
+                    <article class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Member</th>
+                                        <th>Action</th>
+                                        <th>Period</th>
+                                        <th>Reason</th>
+                                        <th>Recorded by</th>
+                                        <th>Date</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="freeze-table"></tbody>
+                            </table>
+                        </div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-benefits"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">PLANS &amp; PRICING</span>
+                            <h2>Membership plans</h2>
+                            <p>Manage the gym plans members can purchase.</p>
+                        </div>
+                        <button
+                            class="primary-button"
+                            data-action="add-benefit"
+                            type="button"
+                        >
+                            ＋ Add membership plan
+                        </button>
+                    </div>
+                    <article class="panel">
+                        <div class="toolbar">
+                            <div class="tab-pills">
+                                <button class="active" type="button">
+                                    Active plans</button
+                                ><button type="button">Archived</button>
+                            </div>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Plan</th>
+                                        <th>Duration</th>
+                                        <th>Price</th>
+                                        <th>Members</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="benefits-table"></tbody>
+                            </table>
+                        </div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-training"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">PLANS &amp; PRICING</span>
+                            <h2>Training packages</h2>
+                            <p>
+                                Sell coaching sessions with clear validity and
+                                restrictions.
+                            </p>
+                        </div>
+                        <button
+                            class="primary-button"
+                            data-action="add-training"
+                            type="button"
+                        >
+                            ＋ Add training package
+                        </button>
+                    </div>
+                    <article class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Package</th>
+                                        <th>Sessions</th>
+                                        <th>Price</th>
+                                        <th>Validity</th>
+                                        <th>Coach</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="training-table"></tbody>
+                            </table>
+                        </div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-payments-report"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">REPORTS</span>
+                            <h2>Membership &amp; Payments</h2>
+                            <p>
+                                Review purchases, paid cash and collectible
+                                balances.
+                            </p>
+                        </div>
+                        <button
+                            class="outline-button"
+                            data-action="show-toast"
+                            type="button"
+                        >
+                            Export
+                        </button>
+                    </div>
+                    <div
+                        id="payments-report-kpis"
+                        class="kpi-grid compact"
+                    ></div>
+                    <article class="panel">
+                        <div class="toolbar">
+                            <select>
+                                <option>This month</option>
+                                <option>Last month</option></select
+                            ><select>
+                                <option>All types</option>
+                                <option>Membership</option>
+                                <option>Training package</option></select
+                            ><select>
+                                <option>All payment statuses</option>
+                                <option>Paid</option>
+                                <option>Outstanding</option></select
+                            ><button
+                                class="primary-button small"
+                                data-action="show-toast"
+                                type="button"
+                            >
+                                Apply filters
+                            </button>
+                        </div>
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Member / purchase</th>
+                                        <th>Type</th>
+                                        <th>Final amount</th>
+                                        <th>Paid</th>
+                                        <th>Balance</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="payments-report-table"></tbody>
+                            </table>
+                        </div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-workouts"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">WORKOUTS</span>
+                            <h2>Workout routines</h2>
+                            <p>
+                                Build repeatable programs for members and
+                                coaches.
+                            </p>
+                        </div>
+                        <button
+                            class="primary-button"
+                            data-action="show-toast"
+                            type="button"
+                        >
+                            ＋ Create routine
+                        </button>
+                    </div>
+                    <div id="workout-cards" class="routine-grid"></div>
+                </section>
+
+                <section
+                    id="view-users"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">USERS</span>
+                            <h2>Staff / Coaches</h2>
+                            <p>Manage access, roles and branch assignments.</p>
+                        </div>
+                        <button
+                            class="primary-button"
+                            data-action="add-user"
+                            type="button"
+                        >
+                            ＋ Add user
+                        </button>
+                    </div>
+                    <div id="users-kpis" class="kpi-grid compact"></div>
+                    <article class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Person</th>
+                                        <th>Role</th>
+                                        <th>Branches</th>
+                                        <th>Last active</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="users-table"></tbody>
+                            </table>
+                        </div>
+                    </article>
+                </section>
+
+                <section
+                    id="view-branches"
+                    class="view"
+                    aria-labelledby="page-title"
+                >
+                    <div class="page-intro">
+                        <div>
+                            <span class="eyebrow">GYM MANAGEMENT</span>
+                            <h2>Branches</h2>
+                            <p>
+                                Keep locations, contacts and active branch
+                                access organized.
+                            </p>
+                        </div>
+                        <button
+                            class="primary-button"
+                            data-action="show-toast"
+                            type="button"
+                        >
+                            ＋ Add branch
+                        </button>
+                    </div>
+                    <div id="branch-cards" class="branch-grid"></div>
                 </section>
 
                 <section
@@ -463,79 +1107,37 @@
                     <div class="page-intro">
                         <div>
                             <span class="eyebrow">PLANS &amp; PRICING</span>
-                            <h2>Plans built for growing gyms</h2>
+                            <h2>Gym Access Plans</h2>
                             <p>
-                                Choose the right operating model for your
-                                business.
+                                Configure the gym access plan members need for
+                                access. These are Iron House Fitness prices.
                             </p>
                         </div>
                         <button
-                            class="outline-button"
-                            data-action="show-toast"
+                            class="primary-button"
+                            data-action="add-subscription"
                             type="button"
                         >
-                            Compare features
+                            ＋ Add Gym Access Plan
                         </button>
                     </div>
-                    <div class="pricing-grid">
-                        <article class="pricing-card">
-                            <span class="eyebrow">STARTER</span>
-                            <h3>₱999<span>/month</span></h3>
-                            <p>
-                                For independent gyms building a strong routine.
-                            </p>
-                            <ul>
-                                <li>150 active members</li>
-                                <li>2 staff accounts</li>
-                                <li>Memberships &amp; payments</li>
-                                <li>Basic reports</li>
-                            </ul>
-                            <button
-                                class="outline-button full"
-                                data-action="show-toast"
-                                type="button"
-                            >
-                                Current plan
-                            </button>
-                        </article>
-                        <article class="pricing-card featured">
-                            <span class="plan-badge">MOST POPULAR</span
-                            ><span class="eyebrow">PRO</span>
-                            <h3>₱1,999<span>/month</span></h3>
-                            <p>For established gyms ready to work smarter.</p>
-                            <ul>
-                                <li>500 active members</li>
-                                <li>5 staff accounts</li>
-                                <li>Full reports &amp; exports</li>
-                                <li>Gym website builder</li>
-                            </ul>
-                            <button
-                                class="primary-button full"
-                                data-action="show-toast"
-                                type="button"
-                            >
-                                Selected plan
-                            </button>
-                        </article>
-                        <article class="pricing-card">
-                            <span class="eyebrow">MULTI-BRANCH</span>
-                            <h3>₱2,999<span>/month</span></h3>
-                            <p>For operators managing multiple locations.</p>
-                            <ul>
-                                <li>Unlimited active members</li>
-                                <li>Staff per branch</li>
-                                <li>Branch managers</li>
-                                <li>Consolidated reports</li>
-                            </ul>
-                            <button
-                                class="outline-button full"
-                                data-action="show-toast"
-                                type="button"
-                            >
-                                Explore plan
-                            </button>
-                        </article>
-                    </div>
+                    <article class="panel">
+                        <div class="table-wrap">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Subscription</th>
+                                        <th>Duration</th>
+                                        <th>Gym access</th>
+                                        <th>Members</th>
+                                        <th>Status</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody id="subscriptions-table"></tbody>
+                            </table>
+                        </div>
+                    </article>
                 </section>
 
                 <section

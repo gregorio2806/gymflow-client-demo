@@ -246,7 +246,7 @@ const groupedNavItems = computed<NavItem[]>(() => {
                       ...find('Plans & Pricing')!,
                       children: [
                           {
-                              title: 'Gym subscriptions',
+                              title: 'Gym Access Plans',
                               href: membershipPlansIndex({
                                   query: { tab: 'subscription' },
                               }),

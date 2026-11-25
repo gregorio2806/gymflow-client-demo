@@ -552,7 +552,7 @@ class TenantIsolationSweepTest extends TestCase
     public function test_invites_are_created_for_your_own_gym_only()
     {
         $this->asOwnerBTargetingGymA()
-            ->post(route('staff.invitations.store'), ['email' => 'new@example.com', 'role' => 'staff', 'gym_id' => $this->gymA->id]);
+            ->post(route('staff.invitations.store'), ['name' => 'Invited User', 'email' => 'new@example.com', 'role' => 'staff', 'gym_id' => $this->gymA->id]);
 
         $invitation = GymInvitation::withoutGlobalScope('gym')->where('email', 'new@example.com')->sole();
         $this->assertSame($this->gymB->id, $invitation->gym_id);

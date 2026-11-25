@@ -406,7 +406,7 @@ const maxBreakdown = computed(() =>
                         ><NativeSelect id="report-kind" v-model="kind"
                             ><option value="">All purchases</option>
                             <option value="subscription">
-                                Gym subscriptions
+                                Gym access plans
                             </option>
                             <option value="benefit">Membership plans</option>
                             <option value="package">

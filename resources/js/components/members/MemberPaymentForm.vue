@@ -20,7 +20,7 @@ const eligible = computed(() =>
             ...item,
             key: 'subscription-' + item.id,
             paymentField: 'member_subscription_id',
-            kindLabel: 'Gym subscription',
+            kindLabel: 'Gym access plan',
         })),
         ...props.purchases.data.map((item) => ({
             ...item,
